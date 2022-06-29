@@ -74,7 +74,7 @@ public class User {
         return activationCode;
     }
 
-    public void setActivationcode(String activationcode) {
+    public void setActivationcode(String activationCode) {
         this.activationCode = activationCode;
     }
 
