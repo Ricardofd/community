@@ -1,5 +1,6 @@
 package com.newcoder.community.controller;
 
+import com.newcoder.community.annotation.LoginRequired;
 import com.newcoder.community.entity.User;
 import com.newcoder.community.service.UserService;
 import com.newcoder.community.util.CommunityUtil;
@@ -21,6 +22,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 @RequestMapping("/user")
@@ -42,13 +45,13 @@ public class UserController {
     @Autowired
     private HostHolder hostHolder;
 
-
+    @LoginRequired
     @RequestMapping(path="/setting",method = RequestMethod.GET)
     public String getSettingPage(){
         return "/site/setting";
     }
 
-
+    @LoginRequired
     @RequestMapping(path="/upload",method = RequestMethod.POST)
     public String uploadHeader(MultipartFile headerImage, Model model) {
         if (headerImage == null) {
@@ -104,6 +107,20 @@ public class UserController {
         } catch (IOException e) {
             logger.error("读取头像失败:"+e.getMessage());
         }
+    }
+    @LoginRequired
+    @RequestMapping(path="/changePassword",method = RequestMethod.POST)
+    public String changePassword(String password,String oldpassword,Model model) {
+
+        User user = hostHolder.getUser();
+        Map<String,Object> map = new HashMap<>();
+        map = userService.updatePassword(user,password,oldpassword);
+        if(map!=null){
+            model.addAttribute("passwordMsg","密码不正确");
+            return "/site/setting";
+        }
+        return "redirect:/index";
+
     }
 
 
