@@ -45,8 +45,13 @@ public class LoginController implements CommunityConstant {
     }
 
     @RequestMapping(path="/register",method=RequestMethod.POST)
-    public String register(Model model, User user){
+    public String register(Model model, User user,String password,String passwordConfirmed){//页面里面的属性能对应上user里面的属性时，springboot会自动构建一个user
+
         Map<String,Object> map = userService.register(user);
+        if(!StringUtils.equals(password,passwordConfirmed)){
+            model.addAttribute("passwordMsg2","输入的密码不一致");
+            return "/site/register";
+        }
         if(map==null || map.isEmpty()){
             model.addAttribute("msg","注册成功,我们已经向您的邮箱发送了一封激活邮件，请尽快激活");
             model.addAttribute("target","/index");

@@ -110,10 +110,14 @@ public class UserController {
     }
     @LoginRequired
     @RequestMapping(path="/changePassword",method = RequestMethod.POST)
-    public String changePassword(String password,String oldpassword,Model model) {
+    public String changePassword(String password,String oldpassword,String passwordConfirmed,Model model) {
 
         User user = hostHolder.getUser();
         Map<String,Object> map = new HashMap<>();
+        if(!StringUtils.equals(password,passwordConfirmed)){
+            model.addAttribute("passwordMsg2","输入的密码不一致");
+            return "/site/setting";
+        }
         map = userService.updatePassword(user,password,oldpassword);
         if(map!=null){
             model.addAttribute("passwordMsg","密码不正确");
