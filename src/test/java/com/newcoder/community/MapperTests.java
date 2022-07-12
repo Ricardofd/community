@@ -101,4 +101,21 @@ public class MapperTests {
         System.out.println(loginTicket.getUserId());
         System.out.println(loginTicket.getStatus());
     }
+    @Test
+    public void testInsertDiscussPost(){
+        DiscussPost discussPost = new DiscussPost();
+        discussPost.setUserId(777);
+        discussPost.setTitle("lalalalalalala");
+        discussPost.setCreateTime(new Date());
+        discussPost.setContent("abcdefghijklmn");
+        discussPost.setType(1);
+        discussPost.setStatus(1);
+        discussPost.setCommentCount(100);
+        discussPost.setScore(4396);
+        int rows=discussPostMapper.insertDiscussPost(discussPost);
+
+        System.out.println(rows);
+        System.out.println(discussPost.getUserId());
+    }
+
 }
