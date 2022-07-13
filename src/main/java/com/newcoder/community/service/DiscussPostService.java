@@ -17,7 +17,7 @@ public class DiscussPostService {
     @Autowired
     private SensitiveFilter sensitiveFilter;
 
-    public List<DiscussPost> findDiscussPosts(int userId, int offset, int limit){
+    public List<DiscussPost> findDiscussPosts(int userId, int offset, int limit){//userId参数是0就查询所有帖子，不然就查询userId对应的所有帖子
         List<DiscussPost> list = discussPostMapper.selectDiscussPosts(userId,offset,limit);
         for(DiscussPost post:list){
             post.setTitle(sensitiveFilter.filter(post.getTitle()));

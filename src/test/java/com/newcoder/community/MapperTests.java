@@ -1,11 +1,15 @@
 package com.newcoder.community;
 
+import com.newcoder.community.dao.CommentMapper;
 import com.newcoder.community.dao.DiscussPostMapper;
 import com.newcoder.community.dao.LoginTicketMapper;
 import com.newcoder.community.dao.UserMapper;
+import com.newcoder.community.entity.Comment;
 import com.newcoder.community.entity.DiscussPost;
 import com.newcoder.community.entity.LoginTicket;
 import com.newcoder.community.entity.User;
+import com.newcoder.community.service.CommentService;
+import com.newcoder.community.util.CommunityConstant;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +23,7 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ContextConfiguration(classes = CommunityApplication.class)
-public class MapperTests {
+public class MapperTests implements CommunityConstant {
     @Autowired
     private UserMapper userMapper;
 
@@ -116,6 +120,33 @@ public class MapperTests {
 
         System.out.println(rows);
         System.out.println(discussPost.getUserId());
+    }
+
+    @Autowired
+    private CommentMapper commentMapper;
+    @Test
+    public void testCommentMapper(){
+        List<Comment> comment = commentMapper.selectCommentsByEntity(ENTITY_TYPE_POST,228,0,100);
+        int abc=commentMapper.selectCountByEntity(ENTITY_TYPE_COMMENT,12);
+        System.out.println(comment);
+        System.out.println(abc);
+    }
+    @Autowired
+    private CommentService commentService;
+    @Test
+    public void testCommentService(){
+        List<Comment> comment = commentService.findCommentsByEntity(ENTITY_TYPE_POST,0,0,5);
+        int abc=commentService.findCommentCount(ENTITY_TYPE_COMMENT,12);
+        System.out.println(comment);
+        System.out.println(abc);
+    }
+
+    @Test
+    public void testDiscussPostMapper(){
+        DiscussPost post = discussPostMapper.selectDiscussPostById(289);
+        System.out.println(post);
+        List<DiscussPost> post2 = discussPostMapper.selectDiscussPosts(174,0,10);
+        System.out.println(post2);
     }
 
 }
