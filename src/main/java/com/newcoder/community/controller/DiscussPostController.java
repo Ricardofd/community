@@ -10,6 +10,7 @@ import com.newcoder.community.service.UserService;
 import com.newcoder.community.util.CommunityConstant;
 import com.newcoder.community.util.CommunityUtil;
 import com.newcoder.community.util.HostHolder;
+import com.newcoder.community.util.SensitiveFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,10 +50,14 @@ public class DiscussPostController implements CommunityConstant {
     }
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private SensitiveFilter sensitiveFilter;
     @RequestMapping(path = "/detail/{discussPostId}",method = RequestMethod.GET)
     public String getDiscussPost(@PathVariable("discussPostId") int discussPostId, Model model, Page page){//只要是实体类型，spring都会自动注入
         //查询帖子
         DiscussPost post = discussPostService.findDiscussPostById(discussPostId);
+        post.setContent(sensitiveFilter.filter(post.getContent()));
+        post.setTitle(sensitiveFilter.filter(post.getTitle()));
         model.addAttribute("post",post);
         //查询作者
         User user = userService.findUserById(post.getUserId());
@@ -72,6 +77,7 @@ public class DiscussPostController implements CommunityConstant {
             for(Comment comment:commentList){
                 //一个评论的VO，包括评论和作者
                 Map<String,Object> commentVo = new HashMap<>();
+                comment.setContent(sensitiveFilter.filter(comment.getContent()));//敏感词过滤
                 commentVo.put("comment",comment);
                 commentVo.put("user",userService.findUserById(comment.getUserId()));
                 //回复列表查询
