@@ -3,6 +3,7 @@ package com.newcoder.community;
 import com.newcoder.community.dao.*;
 import com.newcoder.community.entity.*;
 import com.newcoder.community.service.CommentService;
+import com.newcoder.community.service.MessageService;
 import com.newcoder.community.util.CommunityConstant;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -163,4 +165,32 @@ public class MapperTests implements CommunityConstant {
 
 
     }
+    @Autowired
+    private MessageService messageService;
+
+    @Test
+    public void testMessageService(){
+        Message mse = new Message();
+        mse.setCreateTime(new Date());
+        mse.setContent("dsfjsldkfjdsf");
+        mse.setToId(12);
+        mse.setFromId(234);
+        mse.setConversationId("12_234");
+        mse.setStatus(0);
+        int a = messageService.addMessage(mse);
+
+        List<Integer> abc = new ArrayList<>();
+
+
+    }
+
+    @Test
+    public void testMessageService2(){
+        List<Integer> abc = new ArrayList<>();
+        abc.add(355);
+        messageService.readMessage(abc);
+    }
+
+
+
 }
