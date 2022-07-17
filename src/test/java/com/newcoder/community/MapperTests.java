@@ -1,13 +1,7 @@
 package com.newcoder.community;
 
-import com.newcoder.community.dao.CommentMapper;
-import com.newcoder.community.dao.DiscussPostMapper;
-import com.newcoder.community.dao.LoginTicketMapper;
-import com.newcoder.community.dao.UserMapper;
-import com.newcoder.community.entity.Comment;
-import com.newcoder.community.entity.DiscussPost;
-import com.newcoder.community.entity.LoginTicket;
-import com.newcoder.community.entity.User;
+import com.newcoder.community.dao.*;
+import com.newcoder.community.entity.*;
 import com.newcoder.community.service.CommentService;
 import com.newcoder.community.util.CommunityConstant;
 import org.junit.Test;
@@ -148,5 +142,25 @@ public class MapperTests implements CommunityConstant {
         List<DiscussPost> post2 = discussPostMapper.selectDiscussPosts(174,0,10);
         System.out.println(post2);
     }
+    @Autowired
+    private MessageMapper messageMapper;
+    @Test
+    public void testMessageMapper(){
+        List<Message> list = messageMapper.selectConversations(111,0,20);
+        for(Message message:list){
+            System.out.println(message);
+        }
+        int abc = messageMapper.selectConversationCount(111);
+        System.out.println(abc);
+        List<Message> list2 = messageMapper.selectLetters("111_112",0,10);
+        for(Message message2:list2){
+            System.out.println(message2);
+        }
+        abc = messageMapper.selectLetterCount("111_112");
+        System.out.println(abc);
+        abc = messageMapper.selectLetterUnreadCount(131,"111_131");
+        System.out.println(abc);
 
+
+    }
 }
