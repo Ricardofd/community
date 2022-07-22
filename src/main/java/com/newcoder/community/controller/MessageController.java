@@ -32,6 +32,7 @@ public class MessageController {
     @RequestMapping(path="/letter/list",method = RequestMethod.GET)
     public String getLetterList(Model model, Page page){
         User user = hostHolder.getUser();
+        //Integer.valueOf("abc");//测试500错误
         //分页信息
         page.setLimit(5);
         page.setPath("/letter/list");
@@ -64,6 +65,7 @@ public class MessageController {
         page.setPath("/letter/detail/"+conversationId);
         page.setRows(messageService.findLetterCount(conversationId));
         //私信列表
+
         List<Message> letterList = messageService.findLetters(conversationId,page.getOffset(), page.getLimit());
         List<Map<String, Object>> letters = new ArrayList<>();
         if(letterList!=null){
@@ -112,6 +114,7 @@ public class MessageController {
     @RequestMapping(path="/letter/send",method = RequestMethod.POST)
     @ResponseBody//异步
     public String sendLetter(String toName, String content){
+        //Integer.valueOf("abc");
         User target = userService.findUserByName(toName);
         if(target == null){
             return CommunityUtil.getJSONString(1,"目标用户不存在");
